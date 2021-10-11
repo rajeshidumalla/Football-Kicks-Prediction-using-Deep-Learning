@@ -675,8 +675,8 @@ plot_decision_boundary(lambda x: predict_dec(parameters, x.T), train_X, train_Y)
 
 I have learned that regularization hurts training set performance! This is because it limits the ability of the network to overfit to the training set. But since it ultimately gives better test accuracy, it is helping my system. 
 
-<font color='blue'>
-**What we want you to remember from this notebook**:
+    
+### What we want you to remember from this notebook
     
 - Regularization will help to reduce overfitting.
 - Regularization will drive weights to lower values.

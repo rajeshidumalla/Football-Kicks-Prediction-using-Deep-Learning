@@ -286,23 +286,23 @@ def backward_propagation_with_regularization(X, Y, cache, lambd):
 
     dZ3 = A3 - Y
 
-    ### START CODE HERE ### (approx. 1 line)
+   
     dW3 = 1./m * np.dot(dZ3, A2.T) + lambd/m * W3
-    ### END CODE HERE ###
+    
     db3 = 1./m * np.sum(dZ3, axis=1, keepdims = True)
 
     dA2 = np.dot(W3.T, dZ3)
     dZ2 = np.multiply(dA2, np.int64(A2 > 0))
-    ### START CODE HERE ### (approx. 1 line)
+    
     dW2 = 1./m * np.dot(dZ2, A1.T) + lambd/m * W2
-    ### END CODE HERE ###
+    
     db2 = 1./m * np.sum(dZ2, axis=1, keepdims = True)
 
     dA1 = np.dot(W2.T, dZ2)
     dZ1 = np.multiply(dA1, np.int64(A1 > 0))
-    ### START CODE HERE ### (approx. 1 line)
+    
     dW1 = 1./m * np.dot(dZ1, X.T) + lambd/m * W1
-    ### END CODE HERE ###
+    
     db1 = 1./m * np.sum(dZ1, axis=1, keepdims = True)
 
     gradients = {"dZ3": dZ3, "dW3": dW3, "db3": db3,"dA2": dA2,
@@ -475,20 +475,20 @@ def forward_propagation_with_dropout(X, parameters, keep_prob = 0.5):
     # LINEAR -> RELU -> LINEAR -> RELU -> LINEAR -> SIGMOID
     Z1 = np.dot(W1, X) + b1
     A1 = relu(Z1)
-    ### START CODE HERE ### (approx. 4 lines)         # Steps 1-4 below correspond to the Steps 1-4 described above. 
+             # Steps 1-4 below correspond to the Steps 1-4 described above. 
     D1 = np.random.rand(A1.shape[0],A1.shape[1])                                         # Step 1: initialize matrix D1 = np.random.rand(..., ...)
     D1 = D1 < keep_prob                                      # Step 2: convert entries of D1 to 0 or 1 (using keep_prob as the threshold)
     A1 = A1 * D1                                         # Step 3: shut down some neurons of A1
     A1 = A1 / keep_prob                                        # Step 4: scale the value of neurons that haven't been shut down
-    ### END CODE HERE ###
+    
     Z2 = np.dot(W2, A1) + b2
     A2 = relu(Z2)
-    ### START CODE HERE ### (approx. 4 lines)
+    
     D2 = np.random.rand(A2.shape[0],A2.shape[1])                                         # Step 1: initialize matrix D2 = np.random.rand(..., ...)
     D2 = D2 < keep_prob                                         # Step 2: convert entries of D2 to 0 or 1 (using keep_prob as the threshold)
     A2 = A2 * D2                                         # Step 3: shut down some neurons of A2
     A2 = A2 / keep_prob                                      # Step 4: scale the value of neurons that haven't been shut down
-    ### END CODE HERE ###
+    
     Z3 = np.dot(W3, A2) + b3
     A3 = sigmoid(Z3)
 
@@ -510,12 +510,12 @@ print ("A3 = " + str(A3))
 
 ### 3.2 - Backward propagation with dropout
 
-Implementing the backward propagation with dropout. As before, I am training a 3 layer network and adding dropout to the first and second hidden layers, using the masks $D^{[1]}$ and $D^{[2]}$ stored in the cache. 
+Implementing the backward propagation with dropout. As before, I am training a 3 layer network and adding dropout to the first and second hidden layers, using the masks D^{[1]} and D^{[2]} stored in the cache. 
 
 **Instruction**:
 Backpropagation with dropout is actually quite easy. You will have to carry out 2 Steps:
-1. I have previously shut down some neurons during forward propagation, by applying a mask $D^{[1]}$ to `A1`. In backpropagation, I will have to shut down the same neurons, by reapplying the same mask $D^{[1]}$ to `dA1`. 
-2. During forward propagation, I have divided `A1` by `keep_prob`. In backpropagation, I'll therefore have to divide `dA1` by `keep_prob` again (the calculus interpretation is that if $A^{[1]}$ is scaled by `keep_prob`, then its derivative $dA^{[1]}$ is also scaled by the same `keep_prob`).
+1. I have previously shut down some neurons during forward propagation, by applying a mask D^{[1]} to `A1`. In backpropagation, I will have to shut down the same neurons, by reapplying the same mask D^{[1]} to `dA1`. 
+2. During forward propagation, I have divided `A1` by `keep_prob`. In backpropagation, I'll therefore have to divide `dA1` by `keep_prob` again (the calculus interpretation is that if A^{[1]} is scaled by `keep_prob`, then its derivative dA^{[1]} is also scaled by the same `keep_prob`).
 
 
 
@@ -543,19 +543,19 @@ def backward_propagation_with_dropout(X, Y, cache, keep_prob):
     dW3 = 1./m * np.dot(dZ3, A2.T)
     db3 = 1./m * np.sum(dZ3, axis=1, keepdims = True)
     dA2 = np.dot(W3.T, dZ3)
-    ### START CODE HERE ### (≈ 2 lines of code)
+        
     dA2 = dA2 * D2              # Step 1: Apply mask D2 to shut down the same neurons as during the forward propagation
     dA2 = dA2 / keep_prob           # Step 2: Scale the value of neurons that haven't been shut down
-    ### END CODE HERE ###
+   
     dZ2 = np.multiply(dA2, np.int64(A2 > 0))
     dW2 = 1./m * np.dot(dZ2, A1.T)
     db2 = 1./m * np.sum(dZ2, axis=1, keepdims = True)
 
     dA1 = np.dot(W2.T, dZ2)
-    ### START CODE HERE ### (≈ 2 lines of code)
+   
     dA1 = dA1 * D1              # Step 1: Apply mask D1 to shut down the same neurons as during the forward propagation
     dA1 = dA1 / keep_prob             # Step 2: Scale the value of neurons that haven't been shut down
-    ### END CODE HERE ###
+    
     dZ1 = np.multiply(dA1, np.int64(A1 > 0))
     dW1 = 1./m * np.dot(dZ1, X.T)
     db1 = 1./m * np.sum(dZ1, axis=1, keepdims = True)
@@ -647,7 +647,7 @@ plot_decision_boundary(lambda x: predict_dec(parameters, x.T), train_X, train_Y)
 - Deep learning frameworks like [tensorflow](https://www.tensorflow.org/api_docs/python/tf/nn/dropout), [PaddlePaddle](http://doc.paddlepaddle.org/release_doc/0.9.0/doc/ui/api/trainer_config_helpers/attrs.html), [keras](https://keras.io/layers/core/#dropout) or [caffe](http://caffe.berkeleyvision.org/tutorial/layers/dropout.html) come with a dropout layer implementation.
 
 <font color='blue'>
-**What I should remember about dropout:**
+**What I have learned about dropout:**
     
 - Dropout is a regularization technique.
 - I do only use dropout during training and not using dropout (randomly eliminate nodes) during test time.
@@ -656,7 +656,7 @@ plot_decision_boundary(lambda x: predict_dec(parameters, x.T), train_X, train_Y)
 
 ## 4 - Conclusions
 
-**Here are the results of our three models**: 
+### Here are the results of our three models: 
         
 3-layer NN without regularization:
   
@@ -676,7 +676,7 @@ plot_decision_boundary(lambda x: predict_dec(parameters, x.T), train_X, train_Y)
 I have learned that regularization hurts training set performance! This is because it limits the ability of the network to overfit to the training set. But since it ultimately gives better test accuracy, it is helping my system. 
 
     
-### What we want you to remember from this notebook
+### Key notes:
     
 - Regularization will help to reduce overfitting.
 - Regularization will drive weights to lower values.

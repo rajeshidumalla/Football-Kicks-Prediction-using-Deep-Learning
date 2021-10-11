@@ -27,7 +27,7 @@ plt.rcParams['image.cmap'] = 'gray'
 
 For this project, I am going to recommend positions where France's goal keeper should kick the ball so that the French team's players can then hit it with their head. Later, I can give this recommendations to French Football Corporation as an AI expert :)
 
-<img src="images/field_kiank.png" style="width:600px;height:350px;">
+<img src="field_kiank.png" style="width:600px;height:350px;">
 <caption><center> <u> **Figure 1** </u>: **Football field**<br> The goal keeper kicks the ball in the air, the players of each team are fighting to hit the ball with their head </center></caption>
 
 ## Loading Data
